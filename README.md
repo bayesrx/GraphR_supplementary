@@ -1,13 +1,8 @@
-Welcome! 
+ 
+# Supplementary Materials for Probabilistic Graphical Modeling under Heterogeneity
 
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). 
+You can view the supplementary file at this link: https://bookdown.org/bayesrx/graphr_supplementary/.
 
-This template provides a skeleton file structure that you can edit to create your book. 
+You can find the GraphR package here: https://github.com/bayesrx/GraphR.
 
-The contents inside the .Rmd files provide some pointers to help you get started, but feel free to also delete the content in each file and start fresh.
-
-Additional resources:
-
-The **bookdown** book: https://bookdown.org/yihui/bookdown/
-
-The **bookdown** package reference site: https://pkgs.rstudio.com/bookdown
+Shiny app and tutorial website can be found here: (insert the link).
