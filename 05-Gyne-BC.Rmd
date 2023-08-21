@@ -9,7 +9,7 @@ The Gynecological and breast cancer (Pan-gyane) proteomics dataset was obtained 
 
 All settings are same as in Section \@ref(PAM50process), except that:
 
-(I) Four external covariates: indicators of BRCA, CESC, OV, UCEC are included in the analyses.
+(I) Four intrinsic factors: indicators of BRCA, CESC, OV, UCEC are included in the analyses.
 
 (II) Significantly strong correlation is defined as connection with FDR based p-values $<0.01$ and magnitude $\mid \rho \mid \geq 0.4$)
 

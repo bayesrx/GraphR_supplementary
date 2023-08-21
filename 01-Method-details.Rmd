@@ -1,9 +1,9 @@
 # Methodology {#method}
 In this Section, we discuss the GraphR model and priors in Section \@ref(GraphRmodel) and brief introduction to variational Bayes inference method with mean-field assumption in Section \@ref(MFVB) followed by detailed derivation of the update equations and evidence lower bound (ELBO) for our GraphR model in Section \@ref(derivation) and Section \@ref(GraphElbo) respectively. In Section \@ref(GraphRcompare), we provide a comprehensive overview of the GraphR and competing methods. 
 
-For notational purposes, we consider $\mathbf{Y} = (Y_1,...,Y_p) \in \mathbb{R}^ {N \times p} \sim \mathcal{N}(\mu,\Omega^{-1}(\mathbf{X}))$, where the precision matrix $\Omega(\mathbf{X}) = [\omega_{ij}(\mathbf{X})]_{p \times p}$ is a function of external covariates $\mathbf{X}  = (X_1,...,X_q) \in \mathbb{R}^ {N \times q}$ and denote $\boldsymbol{\theta}$ as the parameters of estimation. Here $N$, $p$, $q$ denotes sample size, number of features and covariates respectively. 
+For notational purposes, we consider $\mathbf{Y} = (Y_1,...,Y_p) \in \mathbb{R}^ {N \times p} \sim \mathcal{N}(\mu,\Omega^{-1}(\mathbf{X}))$, where the precision matrix $\Omega(\mathbf{X}) = [\omega_{ij}(\mathbf{X})]_{p \times p}$ is a function of intrinsic factors $\mathbf{X}  = (X_1,...,X_q) \in \mathbb{R}^ {N \times q}$ and denote $\boldsymbol{\theta}$ as the parameters of estimation. Here $N$, $p$, $q$ denotes sample size, number of features and covariates respectively. 
 
-<!-- Observed features are denoted as $\mathbf{Y} = (Y_1,...,Y_p)$ and external covariates are $\mathbf{X}  = (X_1,...,X_q)$. We mention the details about the GraphR model in Section \@ref(GraphRmodel) followed by derivations of update equations and ELBO in Section \@ref(derivation) and Section \@ref(GraphElbo) respectively.   -->
+<!-- Observed features are denoted as $\mathbf{Y} = (Y_1,...,Y_p)$ and intrinsic factors are $\mathbf{X}  = (X_1,...,X_q)$. We mention the details about the GraphR model in Section \@ref(GraphRmodel) followed by derivations of update equations and ELBO in Section \@ref(derivation) and Section \@ref(GraphElbo) respectively.   -->
 
 
 ## Model and priors {#GraphRmodel}
@@ -78,7 +78,7 @@ Therefore, we have $q^{k}_{\text{vb}}(\boldsymbol{\theta_k}) \propto \text{ exp 
 \right]$.
 
 <!-- ## Method details {#GraphRmethod} -->
-<!-- Observed features are denoted as $\mathbf{Y} = (Y_1,...,Y_p)$ and external covariates are $\mathbf{X}  = (X_1,...,X_q)$. We mention the details about the GraphR model in Section \@ref(GraphRmodel) followed by derivations of update equations and ELBO in Section \@ref(derivation) and Section \@ref(GraphElbo) respectively.   -->
+<!-- Observed features are denoted as $\mathbf{Y} = (Y_1,...,Y_p)$ and intrinsic factors are $\mathbf{X}  = (X_1,...,X_q)$. We mention the details about the GraphR model in Section \@ref(GraphRmodel) followed by derivations of update equations and ELBO in Section \@ref(derivation) and Section \@ref(GraphElbo) respectively.   -->
 
 
 <!-- ### Model and priors {#GraphRmodel} -->
@@ -469,6 +469,7 @@ $$H(b_{ijl}|s_{ijl}) = \frac{1}{2} \text{log} \left[2\pi\sigma^2(s_{ijl})\right]
 $$H(s_{ijl}) = -\psi_{ijl} \text{ log}(\psi_{ijl}) - (1-\psi_{ijl}) \text{ log}(1-\psi_{ijl})$$
 
 Combining all the previous entropy derivations, we have the following expression of evidence lower bound (ELBO) as 
+$
 \begin{align*}
 \begin{split}
 L[q_{\text{vb}}(\boldsymbol{\theta})] =
@@ -504,6 +505,64 @@ Y_i^T \left(
 \end{split}
 \end{align*}
 
+## Algorithm {#algorithm}
+<center><img src="images/algorithm.jpg" width="1000" ></center>
+<!-- \begin{algorithm} -->
+<!-- \caption{GraphR algorithm}\label{alg:cap} -->
+<!-- \begin{algorithmic} -->
+<!-- \State \textbf{Input:} $\mathbf{Y,X}, \text{tolerance}$ -->
+<!-- \State \textbf{Output:} Covariate dependent edges -->
+<!-- \While {$\zeta > \text{tolerance}$} -->
+<!-- \For {$i \text{ in } 1:p$} -->
+<!--     \For {$l \text{ in } 1:q$} -->
+<!--         \State \textbf{Set} $q_{\text{vb}}(\tau_{il}) \sim \Gamma \left(a_\tau + \frac{p-1}{2}, b_\tau + \frac{1}{2}\sum_{j \neq i}^p -->
+<!--     \mathbb{E}_{-\tau_{il}}\left( -->
+<!--     b_{ijl} -->
+<!--     \right)^2 -->
+<!--     \right)$ -->
+<!--     \EndFor -->
+
+<!--     \For {$j \text{ in } 1:p \text{ and } j \neq i;l \text{ in } 1:q$} -->
+<!--     \State \textbf{Set} $q_{\text{vb}}(\pi_{ijl}) \sim \text{Beta} \left(\mathbb{E}_{-\pi_{ijl}}(s_{ijl})+a_\pi, b_\pi - \mathbb{E}_{-\pi_{ijl}}(s_{ijl}) +1 \right)$ -->
+<!--     \EndFor -->
+<!--     \State \textbf{Set} $q_{\text{vb}}(\omega_{ii}) \sim \text{GIG} \left(\frac{n+2}{2},\|Y_i\|^2, -->
+<!-- \mathbb{E}_{-\omega_{ii}}\|\sum_{j \neq i}^p \sum_{s=1}^q b_{ijl}s_{ijl} -->
+<!-- X_l \odot Y_j\|^2 \right)$ -->
+
+<!--     \For {$j \text{ in } 1:p \text{ and } j \neq i;l \text{ in } 1:q$} -->
+<!--     \State $\beta_{ijl} = b_{ijl}s_{ijl}$ -->
+<!--     \State \textbf{Set} $q_{\text{vb}}(b_{ijl}|s_{ijl}) \sim \mathbb{N} \left(\mu(s_{ijl}),\sigma^2(s_{ijl})\right)$ where -->
+
+<!-- \State $\sigma^2(s_{ijl}) = \left[ -->
+<!-- \mathbb{E}_{-b_{ijl}|s_{ijl}}(\frac{1}{\omega_{ii}})\|X_l \odot Y_j\|^2 s_{ijl} + \mathbb{E}_{-b_{ijl}|s_{ijl}}(\tau_{il}) \right]^{-1}$ -->
+
+<!-- \State $\mu(s_{ijl}) = - \sigma^2(s_{ijl}) -->
+<!-- \left\{ -->
+<!-- \left[Y_i + \mathbb{E}_{-b_{ijl}|s_{ijl}} -->
+<!-- \left(\frac{1}{\omega_{ii}} M_{-(i,j)}^{-s} -->
+<!-- \right) -->
+<!-- \right]^T -->
+<!-- [Z_s \odot Y_j]  s_{ijl} -->
+<!-- \right\}$ -->
+
+<!-- \State \textbf{Set} $q_{vb}(s_{ijl}) \sim \text{Ber}(\psi_{ijl})$ where: -->
+
+<!-- \State $\psi_{ijl} = \mathbb{E}_{-s_{ijl}} \text{logit}(\pi_{ijl}) + \frac{1}{2}log \mathbb{E}_{-s_{ijl}} \tau_{il} - $ -->
+<!-- \State $ \frac{1}{2}log\left[ -->
+<!-- \mathbb{E}_{-s_{ijl}}(\frac{1}{\omega_{ii}})\|X_l \odot Y_j\|^2 + \mathbb{E}_{-s_{ijl}}(\tau_{il}) \right]  + $ -->
+<!-- \State $\frac{1}{2}\left[ -->
+<!-- \mathbb{E}_{-s_{ijl}}(\frac{1}{\omega_{ii}})\|X_l \odot Y_j\|^2 + \mathbb{E}_{-s_{ijl}}(\tau_{il}) \right]^{-1} \times$ -->
+<!-- \State $\left[ -->
+<!-- (X_l \odot Y_j)^T (Y_i + \mathbb{E}_{-s_{ijl}}\left[\frac{1}{\omega_{ii}}\right] \mathbb{E}_{-s_{ijl}} M_{-(i,j)}^{-s}) -->
+<!-- \right]^2$ -->
+<!-- \EndFor -->
+<!-- \EndFor -->
+
+<!-- \State $\zeta$: maximum value of expectation difference for parameters before and after updates. -->
+<!-- \EndWhile -->
+<!-- \end{algorithmic} -->
+<!-- \end{algorithm} -->
+<!-- $ -->
 
 ## Overview of competing methods {#GraphRcompare}
 

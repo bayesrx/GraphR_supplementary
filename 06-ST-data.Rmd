@@ -7,7 +7,7 @@ The human breast cancer data was collected from biopsy of breast cancer at a thi
 ## Preprocessing and application {#STprocess}
 Here we only consider the 100 spatially expressed genes with the lowest Benjamini-Hochberg (BH) adjusted p-value by applying SPARK method [@sun2020statistical]. Next, we apply the PQLseq [@sun2019heritability] algorithm to adjust for the covariate effect and obtain the latent gene expressions which follow Normal distribution. 
 
-Two coordinates are scaled and treated as external covariates in the GraphR model. Hyperparameters are set as previous section \@ref(PAM50process). We include correlations with FDR based p-values $<0.01$ in the results. 
+Two coordinates are scaled and treated as intrinsic factors in the GraphR model. Hyperparameters are set as previous section \@ref(PAM50process). We include correlations with FDR based p-values $<0.01$ in the results. 
 
 ## Results {#STBCresult}
 Suppose the partial correlations between gene $i$ and gene $j$ and the corresponding posterior inclusion probabilities are vectors of length $n_1+n_2+n_3$ with $n_1,n_2,n_3$ representing number of spots in tumor, intermediate and normal region, namely

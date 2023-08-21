@@ -7,9 +7,9 @@ The PAM50 [@parker2009supervised] proteomics dataset was obtained from The Cance
 
 ## Preprocessing and application {#PAM50process}
 
-Proteomics data is standardized before applying GraphR. The indicators for cancer subtype (Luminal A+B, Her2-enriched and Basal-like breast cancers) are used as external covariates. 
+Proteomics data is standardized before applying GraphR. The indicators for cancer subtype (Luminal A+B, Her2-enriched and Basal-like breast cancers) are used as intrinsic factors. 
 
-<!-- Three external covariates: indicators of Luminal A+B, Her2-enriched and Basal-like breast cancers are included in the analyses. -->
+<!-- Three intrinsic factors: indicators of Luminal A+B, Her2-enriched and Basal-like breast cancers are included in the analyses. -->
 
 We set hyperparameters as follows: $a_\tau = b_\tau = 0.005,a_\pi = 1,b_\pi=4$. Notably, in case of integrated functional pathway analysis, we change the hyper-parameters: $a_\pi = b_\pi = 0.05$. This provides us potential to consider high density of connections between proteins in the same pathway. 
 
